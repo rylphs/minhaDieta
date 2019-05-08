@@ -1,5 +1,7 @@
 {
   "name": "minhaDieta",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }
