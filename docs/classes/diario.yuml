@@ -1,0 +1,10 @@
+// {type:class}
+// {generate:true}
+[Diario]<>-*>[Registro|data:date]
+[Registro]<>->[Refeicao|nome:string;horaInicio:time; horaFim:time]
+[Registro]<>->[Afericao|valor:int]
+[Registro]<>->[Dose|basal:int;rapida:int]
+[Refeicao]<>-*>[Alimento|nome:string;cho:int;quantidade:int;medida:Medida]
+[<<enum>>Medida|GRAMA;COLHER]
+
+[Prato|descricao:string]<>-*>[Alimento]
