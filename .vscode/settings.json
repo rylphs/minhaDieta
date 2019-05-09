@@ -1,0 +1,32 @@
+{
+    "files.exclude": {
+        "**/.~lock.*": true,
+        "**/*.odg": true,
+        "**/node_modules": true,
+        "platforms": true,
+        "plugins": true,
+        "www": true
+    },
+    "files.watcherExclude": {
+        "**/.git/objects/**": true,
+        "**/.git/subtree-cache/**": true,
+        "**/node_modules/*/**": true,
+        "platforms/*/**": true,
+        "plugins/*/**": true,
+        "www/*/**": true
+      },
+      "ego.power-tools": {
+        "values":{
+            "teste":"null"
+        },
+        "commands": {
+            "myCommand": {
+                "name": "myCommand",
+                "script": "commands.js",
+                "button": {
+                    "text": "Class Diagram $(terminal)"
+                }
+            }
+        }
+    }
+}

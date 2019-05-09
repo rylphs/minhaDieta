@@ -1,0 +1,3 @@
+code --install-extension ego-digital.vscode-powertools
+code --install-extension JaimeOlivares.yuml
+code --install-extension lonefy.vscode-JS-CSS-HTML-formatter
