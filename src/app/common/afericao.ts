@@ -1,0 +1,3 @@
+class Afericao{
+    valor:number;
+}
