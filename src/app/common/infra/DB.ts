@@ -1,11 +1,13 @@
 import { saveConfig } from '@ionic/core';
+import { NgIf } from '@angular/common';
+import { ObjectMapper } from 'json-object-mapper';
+
+export type  DBStoreType = {name:string, keyName: string}
 
 export class DB {
     private db?:IDBDatabase;
-    private dbName = "myDiet";
-    private databaseVersion = 1;
     
-    constructor(private store:string, private keyName: string){}
+    constructor(private dbName:string, private stores:DBStoreType[], private databaseVersion = 0){}
 
     public open(){
         return new Promise<IDBDatabase>((resolve, reject)=>{
@@ -19,16 +21,20 @@ export class DB {
                 this.db = openRequest.result;
                 resolve(openRequest.result);
             };
-            openRequest.onupgradeneeded = this.createDB.bind(this);
+            
+            openRequest.onupgradeneeded = (event)=>{
+                this.createStore(openRequest);
+            }
         });
     }
 
-    public async save(value:any){
+    public async save(storeName:string, value:any){
+        var jsonValue = JSON.parse(<string>ObjectMapper.serialize(value));
         await this.open();
         return new Promise<Event>((resolve, reject)=>{
         
-            var store = this.db.transaction(this.store, 'readwrite').objectStore(this.store);
-            var request = store.add(value);
+            var store = this.db.transaction(storeName, 'readwrite').objectStore(storeName);
+            var request = store.add(jsonValue);
             
             request.onsuccess = (event)=>{
                 resolve(event);
@@ -40,21 +46,23 @@ export class DB {
         });
     }
 
-    public async saveAll(values:any[]){
-        return new Promise<Event>((resolve, reject)=>{
+    public async saveAll(storeName:string, values:any[]){
+        await this.open();
+        var store = this.db.transaction(storeName, 'readwrite').objectStore(storeName);
+        return new Promise((resolve, reject)=>{
             for(let i in values){
-                let value = values[i];
-                this.save(value).catch(reject)
+                var jsonValue = JSON.parse(<string>ObjectMapper.serialize(values[i]));
+                store.add(jsonValue).onerror = reject;
             }
             resolve();
         });
     }
 
-    public get(key:any){
+    public get(storeName:string, key:any){
         return this.open().then((db)=>{
             return new Promise<Event>((resolve, reject)=>{
                
-                var store = db.transaction(this.store, 'readwrite').objectStore(this.store);
+                var store = db.transaction(storeName, 'readwrite').objectStore(storeName);
                 var request = store.get(key);
                 
                 request.onsuccess = (event)=>{
@@ -68,11 +76,53 @@ export class DB {
         });
     }
 
-    private createDB(event:any){
-        var db = event.target.result;
-        db.onerror = function () {
-            console.error(db.errorCode);
-        };
-        var store = db.createObjectStore(this.store, { keyPath: this.keyName });
+    public async getAll<T>(storeName:string, type: {new():T}):Promise<T[]>{
+        await this.open();
+        
+        var store = this.db.transaction(storeName, 'readwrite').objectStore(storeName);
+        return new Promise((resolve, reject)=>{
+            var req = store.getAll();
+            req.onsuccess = ()=>resolve(ObjectMapper.deserializeArray(type, req.result));
+            req.onerror = reject;
+        });
+    }
+
+    public async delete(storeName:string, obj:any){
+        await this.open();
+        
+        var store = this.db.transaction(storeName, 'readwrite').objectStore(storeName);
+        return new Promise((resolve, reject)=>{
+            var keyName = this.stores.find((v) => v.name == storeName).keyName;
+            var key = obj[keyName];
+            if(!key) reject("Chave não existente");
+            var req = store.delete(key);
+            req.onsuccess = ()=>resolve();
+            req.onerror = reject;
+        });
+    }
+
+    public async deleteAll(storeName:string){
+        await this.open();
+        
+        var store = this.db.transaction(storeName, 'readwrite').objectStore(storeName);
+        return new Promise((resolve, reject)=>{
+            var req = store.clear();
+            req.onsuccess = ()=>resolve();
+            req.onerror = reject;
+        });
+    }
+
+    private createStore(request){
+        //return new Promise((resolve, reject)=>{
+            var db = request.result;
+            db.onerror = function (ev) {
+                console.error(ev);
+            };
+            for(let i in this.stores){
+                var storeDef = this.stores[i];
+                var store = db.createObjectStore(storeDef.name, { keyPath: storeDef.keyName });
+            }
+          //  resolve();
+        //});
     }
 }
