@@ -6,8 +6,9 @@ export type  DBStoreType = {name:string, keyName: string}
 
 export class DB {
     private db?:IDBDatabase;
+    public stores:DBStoreType[] = [{name:"diario", keyName:"data"}]
     
-    constructor(private dbName:string, private stores:DBStoreType[], private databaseVersion = 0){}
+    constructor(private dbName:string = "minhaDieta", private databaseVersion = 0){}
 
     public open(){
         return new Promise<IDBDatabase>((resolve, reject)=>{

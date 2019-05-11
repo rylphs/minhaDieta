@@ -10,7 +10,7 @@ describe('IndexDB support', ()=>{
     const storeName = "testStore";
     const version = 4;
     beforeAll(()=>{
-        db = new DB(dbName, [{name:storeName, keyName: "data"}], version);
+        db = new DB(dbName, version);
         db.deleteAll(storeName);   
     });
 
