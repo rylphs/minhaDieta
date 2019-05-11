@@ -1,4 +1,6 @@
-class DB {
+import { saveConfig } from '@ionic/core';
+
+export class DB {
     private db?:IDBDatabase;
     private dbName = "myDiet";
     private databaseVersion = 1;
@@ -21,22 +23,30 @@ class DB {
         });
     }
 
-    public save(value:any){
-        var store = this.store;
-        return this.open().then((db)=>{
-            return new Promise<Event>((resolve, reject)=>{
-               
-                var store = db.transaction(this.store, 'readwrite').objectStore(this.store);
-                var request = store.add(value);
-                
-                request.onsuccess = (event)=>{
-                    resolve(event);
-                };
+    public async save(value:any){
+        await this.open();
+        return new Promise<Event>((resolve, reject)=>{
+        
+            var store = this.db.transaction(this.store, 'readwrite').objectStore(this.store);
+            var request = store.add(value);
+            
+            request.onsuccess = (event)=>{
+                resolve(event);
+            };
 
-                request.onerror = (event)=>{
-                    reject(event);
-                }
-            });
+            request.onerror = (event)=>{
+                reject(event);
+            }
+        });
+    }
+
+    public async saveAll(values:any[]){
+        return new Promise<Event>((resolve, reject)=>{
+            for(let i in values){
+                let value = values[i];
+                this.save(value).catch(reject)
+            }
+            resolve();
         });
     }
 
