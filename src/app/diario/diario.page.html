@@ -1,12 +1,34 @@
 <ion-content>
-    <ion-item>
-        <ion-select [interfaceOptions]="customPopoverOptions" interface="popover" placeholder="Refeição">
-            <ion-select-option value="f">Café</ion-select-option>
-            <ion-select-option value="m">Colação</ion-select-option>
-            <ion-select-option value="m">Almoço</ion-select-option>
-            <ion-select-option value="m">Lanche</ion-select-option>
-            <ion-select-option value="m">Jantar</ion-select-option>
-            <ion-select-option value="m">Ceia</ion-select-option>
-        </ion-select>
-    </ion-item>
+    <ion-slides>
+        <ion-slide>
+            <ion-list class="list-registro">
+                <div class="item-registro" *ngFor="let registro of registros">
+
+                    <div>
+                        <button mat-button size="large" color="primary"> {{registro.hora}}
+                </button>
+                    </div>
+
+                    <div>
+                        <button mat-fab color="primary" matBadgeSize="large" matBadge="{{registro.refeicao}}" matBadgePosition="above after" matBadgeColor="accent">
+                    <ion-icon name="nutrition"></ion-icon>   
+                </button>
+                    </div>
+
+                    <div>
+                        <button mat-fab color="primary" matBadgeSize="large" matBadge="{{registro.afericao}}" matBadgePosition="above after" matBadgeColor="accent">
+                    <ion-icon name="flask"></ion-icon>   
+                </button>
+                    </div>
+
+                    <div>
+                        <button mat-fab color="primary" matBadgeSize="large" matBadge="{{registro.dose}}" matBadgePosition="above after" matBadgeColor="accent">
+                    <ion-icon name="color-filter"></ion-icon>   
+                </button>
+                    </div>
+
+                </div>
+            </ion-list>
+        </ion-slide>
+    </ion-slides>
 </ion-content>

@@ -5,17 +5,14 @@ import * as moment from 'moment';
 import { ObjectMapper } from 'json-object-mapper';
 
 describe('IndexDB support', ()=>{
-    var db:DB;
-    const dbName = "testDB";
-    const storeName = "testStore";
-    const version = 4;
+    /*var db:DB;
     beforeAll(()=>{
-        db = new DB(dbName, version);
-        db.deleteAll(storeName);   
+        db = new DB();
+        db.deleteAll(DB.DIARIO_STORE_NAME);   
     });
 
     afterAll(()=>{
-        db.deleteAll(storeName);
+        db.deleteAll(DB.DIARIO_STORE_NAME);
     });
 
     it("should connect to database", ()=>{
@@ -24,7 +21,7 @@ describe('IndexDB support', ()=>{
        }, fail);
     });
 
-    it("should create", ()=>{
+    it("should save all", ()=>{
         const diario:Diario = new Diario();
         const registro:Registro = new Registro();
         registro.data = moment();
@@ -32,7 +29,7 @@ describe('IndexDB support', ()=>{
 
         var json = JSON.parse(<string> ObjectMapper.serialize(diario));
     
-        return db.saveAll(storeName, diario.registros).then((a)=>{
+        return db.saveAll(DB.DIARIO_STORE_NAME, diario.registros).then((a)=>{
             console.log(a);
         }, fail);
      });
@@ -43,8 +40,8 @@ describe('IndexDB support', ()=>{
         registro.data = moment();
         diario.adicionarRegistro(registro);
 
-        return db.getAll(storeName, Registro).then((a)=>{
+        return db.getAll(DB.DIARIO_STORE_NAME, Registro).then((a)=>{
             console.log(a);
         }, fail);
-     });
+     });*/
 });

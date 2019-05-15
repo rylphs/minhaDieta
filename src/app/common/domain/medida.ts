@@ -1,4 +1,4 @@
-class Medida {
+export class Medida {
     private qtde: number;
 
     constructor(private _name:string, private label: string) { }

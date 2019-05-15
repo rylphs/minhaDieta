@@ -1,14 +1,27 @@
 import { saveConfig } from '@ionic/core';
 import { NgIf } from '@angular/common';
 import { ObjectMapper } from 'json-object-mapper';
+import {DB_VERSION, DBNAME} from '../../../environments/environment';
+
+export enum STORES {
+    DIARIO = "diario",
+    LIBRARY = "library"
+}
 
 export type  DBStoreType = {name:string, keyName: string}
 
 export class DB {
+    public static readonly DIARIO_STORE_NAME:STORES = STORES.DIARIO;
+    public static readonly LIBRARY_STORE_NAME:STORES = STORES.LIBRARY;
     private db?:IDBDatabase;
-    public stores:DBStoreType[] = [{name:"diario", keyName:"data"}]
+    private stores:DBStoreType[] = [
+        {name:DB.DIARIO_STORE_NAME, keyName:"data"},
+        {name:DB.LIBRARY_STORE_NAME, keyName:"index"}
+    ]
+
+    public static TESTE = "asdfasdf";
     
-    constructor(private dbName:string = "minhaDieta", private databaseVersion = 0){}
+    constructor(){}
 
     public open(){
         return new Promise<IDBDatabase>((resolve, reject)=>{
@@ -16,7 +29,7 @@ export class DB {
                 resolve(this.db);
                 return;
             }
-            var openRequest = window.indexedDB.open(this.dbName, this.databaseVersion);
+            var openRequest = window.indexedDB.open(DBNAME, DB_VERSION);
             openRequest.onerror = reject;
             openRequest.onsuccess = ()=>{
                 this.db = openRequest.result;
@@ -29,11 +42,10 @@ export class DB {
         });
     }
 
-    public async save(storeName:string, value:any){
+    public async save(storeName:STORES, value:any){
         var jsonValue = JSON.parse(<string>ObjectMapper.serialize(value));
         await this.open();
         return new Promise<Event>((resolve, reject)=>{
-        
             var store = this.db.transaction(storeName, 'readwrite').objectStore(storeName);
             var request = store.add(jsonValue);
             
@@ -47,7 +59,7 @@ export class DB {
         });
     }
 
-    public async saveAll(storeName:string, values:any[]){
+    public async saveAll(storeName:STORES, values:any[]){
         await this.open();
         var store = this.db.transaction(storeName, 'readwrite').objectStore(storeName);
         return new Promise((resolve, reject)=>{
@@ -59,15 +71,16 @@ export class DB {
         });
     }
 
-    public get(storeName:string, key:any){
+    public get<T>(storeName:STORES, key:any, type: new () => T):Promise<T>{
         return this.open().then((db)=>{
-            return new Promise<Event>((resolve, reject)=>{
+            return new Promise<T>((resolve, reject)=>{
                
                 var store = db.transaction(storeName, 'readwrite').objectStore(storeName);
                 var request = store.get(key);
                 
                 request.onsuccess = (event)=>{
-                    resolve(request.result);
+                    var t:T = ObjectMapper.deserialize(type, request.result);
+                    resolve(t);
                 };
 
                 request.onerror = (event)=>{
@@ -77,18 +90,18 @@ export class DB {
         });
     }
 
-    public async getAll<T>(storeName:string, type: {new():T}):Promise<T[]>{
+    public async getAll<T>(storeName:STORES, type: {new():T}):Promise<T[]>{
         await this.open();
         
         var store = this.db.transaction(storeName, 'readwrite').objectStore(storeName);
-        return new Promise((resolve, reject)=>{
+        return new Promise((resolve:(value:T[])=>any, reject)=>{
             var req = store.getAll();
             req.onsuccess = ()=>resolve(ObjectMapper.deserializeArray(type, req.result));
             req.onerror = reject;
         });
     }
 
-    public async delete(storeName:string, obj:any){
+    public async delete(storeName:STORES, obj:any){
         await this.open();
         
         var store = this.db.transaction(storeName, 'readwrite').objectStore(storeName);
@@ -102,7 +115,7 @@ export class DB {
         });
     }
 
-    public async deleteAll(storeName:string){
+    public async deleteAll(storeName:STORES){
         await this.open();
         
         var store = this.db.transaction(storeName, 'readwrite').objectStore(storeName);

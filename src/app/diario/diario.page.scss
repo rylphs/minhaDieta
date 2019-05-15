@@ -1,4 +1,73 @@
 .welcome-card ion-img {
-  max-height: 35vh;
-  overflow: hidden;
+    max-height: 35vh;
+    overflow: hidden;
+}
+
+.item-registro {
+    box-shadow: 3px 3px 2px 0px rgba(0, 0, 0, 0.50);
+    border-top: 1px solid #DDDDDD;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: space-around;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.mat-badge-content {
+    line-height: 12px;
+    font-size: 12px;
+    white-space: pre-wrap;
+    width: 40px;
+    height: 40px;
+    top: -5px !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+:host ion-button:first-child {
+    font-size: 16px;
+}
+
+:host ion-button.last-btn {
+    border-right: 0px;
+}
+
+.item-registro ion-chip ion-icon {
+    margin-bottom: 2px;
+}
+
+.item-registro>div {
+    padding-right: 17px;
+    margin-right: 5px;
+}
+
+.item-registro ion-icon {
+    font-size: 22px;
+}
+
+.item-registro>div:first-child {
+    padding-right: 0px;
+    margin-right: 10px;
+    margin-left: 5px;
+    padding-top: 10px;
+    border-right: 1px solid var(--ion-color-primary);
+}
+
+.item-registro>div:first-child>button {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.list-registro {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    align-content: space-around;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
 }
