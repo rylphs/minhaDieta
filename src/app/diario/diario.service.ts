@@ -12,6 +12,8 @@ export class DiarioService {
     private db:DB = new DB();
     private static STORE = DB.DIARIO_STORE_NAME;
 
+    private map = {};
+
     public  registroDeHoje():Promise<Registro>{
        
         return new Promise((resolve, reject)=>{
@@ -35,16 +37,25 @@ export class DiarioService {
         return await this.db.save(DiarioService.STORE, registro);
     }
 
-    public getRegistrosDeHoje(){
+    public getRegistros(data:Moment):Registro[]{
+        var d = data.clone().startOf('day').valueOf();
+        if(!!this.map[d]){
+            return this.map[d];
+        }
         var cafe = new Registro();
-        cafe.data = moment().hour(7);
-        var colacao = new Registro();colacao.data = moment().hours(10).minutes(37);
-        var almoco = new Registro();almoco.data = moment();
-        var lanche = new Registro();lanche.data = moment().hours(15).minutes(20);
-        var jantar = new Registro();jantar.data = moment().hours(18).minutes(6);
-        var ceia = new Registro();ceia.data = moment().hours(22).minutes(0);
-        return [
+        cafe.data = data.clone().hour(7);
+        var colacao = new Registro();colacao.data = data.clone().hours(10).minutes(Math.floor(Math.random()*59));
+        var almoco = new Registro();almoco.data = data.clone();
+        var lanche = new Registro();lanche.data = data.clone().hours(15).minutes(Math.floor(Math.random()*59));
+        var jantar = new Registro();jantar.data = data.clone().hours(18).minutes(Math.floor(Math.random()*59));
+        var ceia = new Registro();ceia.data = data.clone().hours(22).minutes(Math.floor(Math.random()*59));
+        this.map[d] = [
             cafe, colacao, almoco, lanche, jantar, ceia
         ]
+        return this.map[d].slice();
+    }
+
+    public getRegistrosDeHoje(){
+        return this.getRegistros(moment());
     }
 }

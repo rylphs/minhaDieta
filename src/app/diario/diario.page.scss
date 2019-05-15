@@ -3,16 +3,22 @@
     overflow: hidden;
 }
 
+.slide-registros {
+    height: 100%;
+}
+
 .item-registro {
-    box-shadow: 3px 3px 2px 0px rgba(0, 0, 0, 0.50);
+    /*box-shadow: 3px 3px 2px 0px rgba(0, 0, 0, 0.50);
     border-top: 1px solid #DDDDDD;
     margin-bottom: 10px;
     display: flex;
     flex-direction: row;
     align-items: stretch;
+    justify-content: space-around;*/
+    padding-bottom: 0px;
     justify-content: space-around;
-    padding-top: 5px;
-    padding-bottom: 5px;
+    box-shadow: 0px 3px 2px 2px rgba(0, 0, 0, 0.25);
+    margin-bottom: 10px;
 }
 
 .mat-badge-content {
@@ -21,7 +27,7 @@
     white-space: pre-wrap;
     width: 40px;
     height: 40px;
-    top: -5px !important;
+    top: 0px !important;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -48,15 +54,11 @@
     font-size: 22px;
 }
 
-.item-registro>div:first-child {
-    padding-right: 0px;
-    margin-right: 10px;
-    margin-left: 5px;
-    padding-top: 10px;
+.item-registro>ion-col:first-child {
     border-right: 1px solid var(--ion-color-primary);
 }
 
-.item-registro>div:first-child>button {
+.item-registro>ion-col:first-child>button {
     font-size: 20px;
     font-weight: bold;
 }

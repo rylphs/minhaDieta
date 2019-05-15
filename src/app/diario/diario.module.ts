@@ -4,12 +4,14 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { DiarioPage } from './diario.page';
-import {MatButtonModule, MatBadgeModule} from '@angular/material';
+import {MatButtonModule, MatBadgeModule, MatDatepickerModule, MatNativeDateModule} from '@angular/material';
 
 @NgModule({
   imports: [
     MatButtonModule,
     MatBadgeModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
     IonicModule,
     CommonModule,
     FormsModule,

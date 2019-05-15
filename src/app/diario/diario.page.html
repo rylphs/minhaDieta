@@ -1,34 +1,40 @@
 <ion-content>
-    <ion-slides>
-        <ion-slide>
-            <ion-list class="list-registro">
-                <div class="item-registro" *ngFor="let registro of registros">
+    <ion-slides [options]="options" pager=true class="slide-registros" #slider (ionSlideNextEnd)="nextDay()" (ionSlidePrevEnd)="prevDay()">
+        <ion-slide *ngFor="let n of numbers">
+            <ion-grid class="list-registro">
+                <ion-row>
+                    <ion-item>
+                        <input readonly matInput [matDatepicker]="picker" [value]="dataRegistro">
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </ion-item>
+                </ion-row>
+                <ion-row class="item-registro ion-justify-content-around ion-align-items-center" *ngFor="let registro of registros">
 
-                    <div>
-                        <button mat-button size="large" color="primary"> {{registro.hora}}
-                </button>
-                    </div>
+                    <ion-col>
+                        <button mat-button size="large" color="primary"> {{registro.hora}} - {{n}}</button>
+                    </ion-col>
 
-                    <div>
+                    <ion-col>
                         <button mat-fab color="primary" matBadgeSize="large" matBadge="{{registro.refeicao}}" matBadgePosition="above after" matBadgeColor="accent">
-                    <ion-icon name="nutrition"></ion-icon>   
-                </button>
-                    </div>
+                            <ion-icon name="nutrition"></ion-icon>   
+                        </button>
+                    </ion-col>
 
-                    <div>
+                    <ion-col>
                         <button mat-fab color="primary" matBadgeSize="large" matBadge="{{registro.afericao}}" matBadgePosition="above after" matBadgeColor="accent">
-                    <ion-icon name="flask"></ion-icon>   
-                </button>
-                    </div>
+                            <ion-icon name="flask"></ion-icon>   
+                        </button>
+                    </ion-col>
 
-                    <div>
+                    <ion-col>
                         <button mat-fab color="primary" matBadgeSize="large" matBadge="{{registro.dose}}" matBadgePosition="above after" matBadgeColor="accent">
-                    <ion-icon name="color-filter"></ion-icon>   
-                </button>
-                    </div>
+                            <ion-icon name="color-filter"></ion-icon>   
+                        </button>
+                    </ion-col>
 
-                </div>
-            </ion-list>
+                </ion-row>
+            </ion-grid>
         </ion-slide>
     </ion-slides>
 </ion-content>
