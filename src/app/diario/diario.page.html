@@ -1,5 +1,11 @@
 <ion-content>
 
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+        <ion-fab-button>
+            <ion-icon name="add" (click)="addRegistro()"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
+
     <ion-item>
         <span (click)="picker.open()">{{diarioAtual.formatedDate}}</span>
         <input touchUi type="hidden" readonly matInput [matDatepicker]="picker" [value]="diarioAtual.data" (dateChange)="navigateTo($event)">
@@ -7,7 +13,7 @@
         <mat-datepicker touchUi #picker></mat-datepicker>
     </ion-item>
 
-    <ion-slides [options]="options" pager=false class="slide-registros" #slider (ionSlideNextEnd)="nextDay()" (ionSlidePrevEnd)="prevDay()">
+    <ion-slides [options]="options" scrollbar=true pager=false class="slide-registros" #slider (ionSlideNextEnd)="nextDay()" (ionSlidePrevEnd)="prevDay()">
         <ion-slide *ngFor="let diario of diarios">
             <ion-grid class="list-registro">
 

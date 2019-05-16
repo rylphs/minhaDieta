@@ -77,16 +77,17 @@ export class DiarioPage {
     
   }
 
+  public addRegistro(){
+    var registro = new Registro();
+    registro.data = moment();
+    this.diarioAtual.adicionarRegistro(registro);
+  }
+
   public get options(){
     return this._options;
   }
 
   public async navigateTo( event: MatDatepickerInputEvent<Moment>){
-    /*setTimeout(()=>{
-      var data = event.value;
-     //this.nav(data);
-     this.configurarDiarios(new Diario(data, this.diarioService.getRegistros(data)));
-    },0)*/
     var data = event.value;
     this.diarioAtual = new Diario(data, this.diarioService.getRegistros(data));
     this.configurarDiarios(new Diario(data, this.diarioService.getRegistros(data)));
