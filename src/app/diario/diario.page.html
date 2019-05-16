@@ -1,18 +1,20 @@
 <ion-content>
-    <ion-slides [options]="options" pager=true class="slide-registros" #slider (ionSlideNextEnd)="nextDay()" (ionSlidePrevEnd)="prevDay()">
-        <ion-slide *ngFor="let n of numbers">
+
+    <ion-item>
+        <span (click)="picker.open()">{{diarioAtual.formatedDate}}</span>
+        <input touchUi type="hidden" readonly matInput [matDatepicker]="picker" [value]="diarioAtual.data" (dateChange)="navigateTo($event)">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker touchUi #picker></mat-datepicker>
+    </ion-item>
+
+    <ion-slides [options]="options" pager=false class="slide-registros" #slider (ionSlideNextEnd)="nextDay()" (ionSlidePrevEnd)="prevDay()">
+        <ion-slide *ngFor="let diario of diarios">
             <ion-grid class="list-registro">
-                <ion-row>
-                    <ion-item>
-                        <input readonly matInput [matDatepicker]="picker" [value]="dataRegistro">
-                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                        <mat-datepicker #picker></mat-datepicker>
-                    </ion-item>
-                </ion-row>
-                <ion-row class="item-registro ion-justify-content-around ion-align-items-center" *ngFor="let registro of registros">
+
+                <ion-row class="item-registro ion-justify-content-around ion-align-items-center" *ngFor="let registro of diario.registros">
 
                     <ion-col>
-                        <button mat-button size="large" color="primary"> {{registro.hora}} - {{n}}</button>
+                        <button mat-button size="large" color="primary"> {{registro.hora}}</button>
                     </ion-col>
 
                     <ion-col>

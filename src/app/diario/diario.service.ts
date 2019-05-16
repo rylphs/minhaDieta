@@ -43,9 +43,9 @@ export class DiarioService {
             return this.map[d];
         }
         var cafe = new Registro();
-        cafe.data = data.clone().hour(7);
+        cafe.data = data.clone().hour(7).minutes(Math.floor(Math.random()*59));
         var colacao = new Registro();colacao.data = data.clone().hours(10).minutes(Math.floor(Math.random()*59));
-        var almoco = new Registro();almoco.data = data.clone();
+        var almoco = new Registro();almoco.data = data.clone().hours(12).minutes(Math.floor(Math.random()*59));
         var lanche = new Registro();lanche.data = data.clone().hours(15).minutes(Math.floor(Math.random()*59));
         var jantar = new Registro();jantar.data = data.clone().hours(18).minutes(Math.floor(Math.random()*59));
         var ceia = new Registro();ceia.data = data.clone().hours(22).minutes(Math.floor(Math.random()*59));
