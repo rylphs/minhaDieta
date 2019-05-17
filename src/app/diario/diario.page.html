@@ -6,14 +6,32 @@
         </ion-fab-button>
     </ion-fab>
 
-    <ion-item>
-        <span (click)="picker.open()">{{diarioAtual.formatedDate}}</span>
-        <input touchUi type="hidden" readonly matInput [matDatepicker]="picker" [value]="diarioAtual.data" (dateChange)="navigateTo($event)">
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker touchUi #picker></mat-datepicker>
-    </ion-item>
+    <ion-fab vertical="top" horizontal="start" slot="fixed">
+        <ion-fab-button (click)="prev()" color="light" class="prev-day ion-color ion-color-light ios ion-activatable ion-focusable hydrated">
+            <ion-icon class="ios hydrated" name="arrow-dropleft"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
 
-    <ion-slides [options]="options" scrollbar=true pager=false class="slide-registros" #slider (ionSlideNextEnd)="nextDay()" (ionSlidePrevEnd)="prevDay()">
+    <ion-fab vertical="top" horizontal="end" slot="fixed">
+        <ion-fab-button (click)="next()" class="next-day">
+            <ion-icon name="arrow-dropright"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
+
+    <ion-grid style="flex-direction: column;">
+        <ion-row class="ion-align-items-center ion-justify-content-center" justify-content="center">
+
+            <ion-col>
+                <span (click)="picker.open()">{{diarioAtual.formatedDate}}</span>
+                <input touchUi type="hidden" readonly matInput [matDatepicker]="picker" [value]="diarioAtual.data" (dateChange)="navigateTo($event)">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker touchUi #picker></mat-datepicker>
+            </ion-col>
+
+        </ion-row>
+    </ion-grid>
+
+    <ion-slides [options]="options" scrollbar=false pager=true class="slide-registros" #slider (ionSlideNextEnd)="nextDay()" (ionSlidePrevEnd)="prevDay()">
         <ion-slide *ngFor="let diario of diarios">
             <ion-grid class="list-registro">
 

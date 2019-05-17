@@ -16,6 +16,7 @@ import { provideForRootGuard } from '@angular/router/src/router_module';
 })
 export class DiarioPage {
   @ViewChild('slider') private slider: IonSlides;
+ // @ViewChild('slides') private slides: Slides;
   //public registros:Registro[];
   //public _dataRegistro:moment.Moment = moment();
   //numbers = [0,1,2];
@@ -25,7 +26,10 @@ export class DiarioPage {
   private MIDDLE_SLIDE = 1;
   private FIRST_SLIDE = 0;
 
-  _options = {initialSlide: 3, runCallbacksOnInit:false, pager: false}
+  _options = {initialSlide: 3, runCallbacksOnInit:false, pager: false, navigation: {
+    nextEl: '.next-day',
+    prevEl: '.prev-day',
+  },}
 
   constructor(private libraryService:LibraryService, private diarioService:DiarioService){
     var ontem = moment().startOf('date').subtract(1, 'days');
@@ -132,5 +136,13 @@ export class DiarioPage {
     if(!!i)
       this.diarioAtual = this.diarios[i];
     else this.diarioAtual = diario;
+  }
+
+  public prev(){
+    this.slider.slidePrev(400, true);
+  }
+
+  public next(){
+    this.slider.slideNext(400, true);
   }
 }
